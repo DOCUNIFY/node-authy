@@ -1,7 +1,7 @@
 {
-  "name": "authy",
-  "version": "1.4.0",
-  "description": "Authy.com API lib for node.js",
+  "name": "docunify-authy",
+  "version": "1.0.0",
+  "description": "Authy.com API lib for node.js. Forked from evilpacket/node-authy by Docunify for customization purpose",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/evilpacket/node-authy.git"
+    "url": "git://github.com/DOCUNIFY/node-authy.git"
   },
   "keywords": [
     "authentication",
@@ -21,7 +21,7 @@
     "two factor",
     "2 factor"
   ],
-  "author": "Adam Baldwin <baldwin@andyet.net>",
+  "author": "Manu Mouton <manu.mouton@docunify.com>",
   "license": "MIT",
   "dependencies": {
     "request": "^2.87.0"

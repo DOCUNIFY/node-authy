@@ -1,6 +1,6 @@
 var request = require('request');
 var querystring = require("querystring");
-var VERSION = "1.1"
+var VERSION = "1.1";
 
 module.exports = function (api_key, api_url) {
     return new Authy(api_key, api_url);
@@ -18,7 +18,7 @@ Authy.prototype.register_user = function (email, cellphone, country_code, send_s
         country = country_code;
         send_install_link = send_sms_install_link;
     }
-    else if (arguments.length == 4) {
+    else if (arguments.length === 4) {
         callback = send_sms_install_link;
         if (typeof country_code == "boolean") {
             send_install_link = country_code;
@@ -69,14 +69,14 @@ Authy.prototype.verify = function (id, token, force, callback) {
 
     // Overwrite the default body to check the response.
     check_body_callback = function(err, res) {
-        if(!err && res.token != "is valid") {
+        if(!err && res.token !== "is valid") {
             err = {
                 message: "Unknown API response."
-            }
+            };
             res = null
         }
         callback(err, res)
-    }
+    };
     this._request("get", "/protected/json/verify/" + querystring.escape(cleanToken) + "/" + querystring.escape(id), {}, check_body_callback, qs);
 };
 
@@ -92,13 +92,19 @@ Authy.prototype.request_sms = function (id, force, callback) {
     this._request("get", "/protected/json/sms/" + querystring.escape(id), {}, callback, qs);
 };
 
-Authy.prototype.request_call = function (id, force, callback) {
+/**
+ * Request an Authy call.
+ * @param id
+ * @param parameters: force, locale; this parameter is optional
+ * @param callback
+ */
+Authy.prototype.request_call = function (id, parameters, callback) {
     var qs = {};
 
     if (arguments.length > 2) {
-        qs.force = force;
+        qs = parameters;
     } else {
-        callback = force;
+        callback = parameters;
     }
 
     this._request("get", "/protected/json/call/" + querystring.escape(id), {}, callback, qs);
@@ -108,11 +114,11 @@ Authy.prototype.phones = function() {
     self = this;
     return {
         verification_start: function(phone_number, country_code, params, callback) {
-            if (arguments.length == 3) {
+            if (arguments.length === 3) {
                 callback = params;
-                params = {}
+                params = {};
             } else if (typeof params !== "object") {
-                params = {via: params}
+                params = {via: params};
             }
 
             options = {
@@ -186,13 +192,13 @@ Authy.prototype.send_approval_request= function (id,user_payload,hidden_details,
 };
 
 Authy.prototype._request = function(type, path, params, callback, qs) {
-    qs = qs || {}
+    qs = qs || {};
     qs['api_key'] = this.apiKey;
 
-    user_agent = "AuthyNode/"+VERSION+" (node "+process.version+")"
+    user_agent = "AuthyNode/"+VERSION+" (node "+process.version+")";
     headers = {
         "User-Agent": user_agent
-    }
+    };
 
     options = {
         url: this.apiURL + path,
@@ -202,7 +208,7 @@ Authy.prototype._request = function(type, path, params, callback, qs) {
         json: true,
         jar: false,
         strictSSL: true
-    }
+    };
 
     var callback_check = function (err, res, body) {
         if (!err) {
